@@ -142,8 +142,12 @@ if [[ "${CHEM_GROUPS,,}" == *soa* ]]; then
    fi
 fi
 # Biogenic SOA
-if [[ "${CONFIG_BIOSOA_SCHEME:-0}" == 1 ]]; then
-   sed -i "s/\(config_biosoa_scheme[[:space:]]*=[[:space:]]*\).*/\1${CONFIG_BIOSOA_SCHEME}/" namelist.atmosphere
+biosoa_scheme="${CONFIG_BIOSOA_SCHEME:-none}"
+
+if [[ "${CHEM_GROUPS,,}" == *soa* &&
+      "${CONFIG_SOA_SCHEME:-0}" == 2 &&
+      "${biosoa_scheme,,}" == "simple" ]]; then
+   sed -i "s/\(config_biosoa_scheme[[:space:]]*=[[:space:]]*\).*/\1'simple'/" namelist.atmosphere
    num_chem=$(( num_chem + 2 ))
 fi
 # Extra chemical tracers

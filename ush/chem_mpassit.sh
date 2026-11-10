@@ -22,11 +22,18 @@ fi
 if [[ "${CHEM_GROUPS}" == *ssalt* ]]; then
   cat "${FIXrrfs}"/chemistry/mpassit/histlist_3d_ssalt >> histlist_3d
 fi
-if [[ "${CHEM_GROUPS}" == *soa* ]]; then
+if [[ "${CHEM_GROUPS,,}" == *soa* ]]; then
   cat "${FIXrrfs}"/chemistry/mpassit/histlist_3d_soa >> histlist_3d
+
+  biosoa_scheme="${CONFIG_BIOSOA_SCHEME:-none}"
+
+  if [[ "${CONFIG_SOA_SCHEME:-0}" == 2 &&
+        "${biosoa_scheme,,}" == "simple" ]]; then
+    cat "${FIXrrfs}"/chemistry/mpassit/histlist_3d_biosoa >> histlist_3d
+  fi
 fi
-if [[ "${CONFIG_BIOSOA_SCHEME:-0}" == 1 ]]; then
-  cat "${FIXrrfs}"/chemistry/mpassit/histlist_3d_biosoa >> histlist_3d
+if [[ "${CHEM_GROUPS}" == *sna* ]]; then
+  cat "${FIXrrfs}"/chemistry/mpassit/histlist_3d_sna >> histlist_3d
 fi
 for tracer in ${EXTRA_CHEMICAL_TRACERS//,/ }; do
     # Convert to uppercase
